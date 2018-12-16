@@ -1,0 +1,7 @@
+Question 1) Given a mesh with all of its half-edges created but none of its SYM pointers set, what is the minimum information needed to determine which half-edge should be the SYM of some other half-edge?
+
+	The minimum information needed to determine which half-edge should be the SYM of some other half-edge is the vertex information. That is, the vertex each edge points to.
+
+Question 2) Which function in the Drawable class determines the primitives (i.e. triangles, lines, or points) with which a given mesh will be drawn? What does Drawable::elemCount return, and where is this value used?
+
+	Drawable::drawMode() determines the primitives with which a mesh will be drawn. Drawable::elemCount() returns the number of indices stored in bufIdx. This value is used in the ShaderProgram's draw() function.

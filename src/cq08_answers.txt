@@ -1,0 +1,7 @@
+What visual errors may occur when using linear blend skinning for a mesh? Why do these errors occur?
+	
+	Using linear blend skinning may not necessarily preserve the volume of our mesh. This occurs because linear interpolating rotation matrices results in implicit scaling (i.e. the LERP'ed rotation matrices no longer have cosine/sine values in the columns of the matrix).
+
+Since one cannot insert breakpoints into a GLSL shader program, how might one debug a shader? For example, if one were writing a vertex shader that applies a mesh skinning deformation, how might one determine which vertices are influenced by a particular joint? Consider what alterations to your fragment shader might be useful to test this.
+
+	We could visualize the influence of a particular joint on the vertices with fragment shader (i.e. color the mesh according to the fluence of the joint). We can then see if the joint is actually influencing the vertices.

@@ -1,0 +1,25 @@
+%%%%%%%%%%%%%%%%%%%%%%%% HW06 HELPLOG %%%%%%%%%%%%%%%%%%%%%%%%
+2018-10-19 10:05pm: I used the following site to learn about static members https://www.tutorialspoint.com/cplusplus/cpp_static_members.htm
+2018-10-24  7:50am: I used the following documentation on QListWidget's to learn about the signals QListWidgets emit: http://doc.qt.io/archives/qt-4.8/qlistwidget.html
+2018-10-24  7:58am: I used the following documentation on QListWidgetItem's to learn how to modify the text of the item: http://doc.qt.io/archives/qt-4.8/qlistwidgetitem.html
+2018-10-24  8:01am: I used the following to learn how to convert int's to QString's: https://stackoverflow.com/questions/3211771/how-to-convert-int-to-qstring
+2018-10-25  3:35pm: The following told me how to clear a QWidgetList *WITHOUT* deleting the elements of said list: https://stackoverflow.com/questions/9594768/how-can-i-empty-a-qlistwidget-without-having-it-delete-all-of-the-qlistitemwidge
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% HW07 HELPLOG %%%%%%%%%%%%%%%%%%%%%%%%
+2018-10-28 12:59am: I used the following to help me use QFileDialog and getting the path of a file clicked: http://doc.qt.io/qt-5/qfiledialog.html#getExistingDirectory
+2018-10-28  1:13am: The following helped me trim whitespaces from a QString: https://stackoverflow.com/questions/8215303/how-do-i-remove-trailing-whitespace-from-a-qstring
+2018-10-28  1:15am: Helped me read text from a file: https://stackoverflow.com/questions/2612103/qt-reading-from-a-text-file
+2018-10-28  1:25am: Splitting a QString by whitespace: http://doc.qt.io/qt-5/qstring.html#split-2
+2018-10-28  1:52am: Converting QString to float: http://doc.qt.io/qt-5/qstring.html
+2018-10-28  9:40am: QMap documentation, finding an element with a key: http://doc.qt.io/qt-5/qmap.html#find
+2018-10-28  9:48am: checking if an element exists with the iterator: http://doc.qt.io/qt-5/qmap-iterator.html
+2018-10-28  9:56am: creating pairs: http://doc.qt.io/archives/qt-4.8/qpair.html
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% HW08 HELPLOG %%%%%%%%%%%%%%%%%%%%%%%%
+2018-11-4 11:24pm: Helped understand QJsonDocuments: https://stackoverflow.com/questions/15893040/how-to-create-read-write-json-files-in-qt5
+2018-11-5  8:11am: Helped figure out how to iterate through QJsonArrays: https://stackoverflow.com/questions/23174393/parse-jsonarray
+2018-11-5  8:40am: Helped build a quaternion from angle/axis: https://glm.g-truc.net/0.9.0/api/a00184.html
+2018-11-7  9:33am: Helped format a QString: https://stackoverflow.com/questions/4784155/how-to-format-a-qstring
+2018-11-7  7:54pm: Helped pass array of matrices to shader: https://gamedev.stackexchange.com/questions/86621/how-can-i-pass-a-stdvectorvector3f-to-my-shader

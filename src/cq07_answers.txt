@@ -1,0 +1,16 @@
+1) When quadrangulating a face during Catmull-Clark subdivision, what information must you temporarily store in order to properly link your half-edge pointers without creating inaccessible edges?
+
+	When quadrangulating a face, you must store a tempory HalfEdge pointer to the HalfEdge of the next following the corner vertex. This is so that we may access this HalfEdge after inserting a interior face.
+
+			  'b'
+			. <-- . <-- .
+			|     |  A  |
+			.     . --> .
+			|           |
+			. --> . --> .
+
+	So for example, if we were creating the interior face 'A', we would want to store a pointer to the HalfEdge 'b', which corresponds to the HalfEdge below 'b'. Otherwise, we would not have a way to reach it.
+
+2) When extruding a face, what operation must be performed after all edges have been turned into quadrangles via the extrusion algorithm discussed in the lecture slides? What iteration of said operation must be specially handled?
+
+	After all edges have been turned into quandrangles, the sym pointers of each extruded must be set. The stitching of the first new face's side edge to the last new face's side edge is the iteration that must be specially handled (i.e. the part of a loop that links beginning to end).
