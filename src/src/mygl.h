@@ -37,6 +37,8 @@
 // enums to help determine the type of component selected on mainwindow
 enum TypeSelected { EDGE, FACE, VERT, NONE };
 
+enum ChannelSelected { RED_CH, GREEN_CH, BLUE_CH };
+
 class MyGL : public GLWidget277 {
     Q_OBJECT
     // don't forget to run qmake afterwards
@@ -69,6 +71,11 @@ private:
 
     Camera m_glCamera;
 
+    // A variable used to track the mouse's previous position when
+    // clicking and dragging on the GL viewport. Used to move the camera
+    // in the scene.
+    glm::vec2 m_mousePosPrev;
+
 public:
     explicit MyGL(QWidget *parent = 0);
     ~MyGL();
@@ -80,6 +87,9 @@ public:
 protected:
     void keyPressEvent(QKeyEvent *e);
     void wheelEvent(QWheelEvent* e);
+
+    void mousePressEvent(QMouseEvent* e);
+    void mouseMoveEvent(QMouseEvent* e);
 
     void send_components();
 
@@ -108,12 +118,17 @@ protected:
 
     void skin_mesh();
 
+    void update_face_col(ChannelSelected channel, float value);
+
+    void setFaceColorSliders(glm::vec3 col);
+    void resetFaceColorSliders();
+
 public slots:
     void slot_get_selected_list_item(QListWidgetItem *item);
 
-    void slot_update_face_r_col(double r);
-    void slot_update_face_g_col(double g);
-    void slot_update_face_b_col(double b);
+    void slot_update_face_red_col(int r);
+    void slot_update_face_green_col(int g);
+    void slot_update_face_blue_col(int b);
 
     void slot_update_vert_x_pos(double x);
     void slot_update_vert_y_pos(double y);
@@ -151,9 +166,9 @@ signals:
     void send_vert_y_pos(double);
     void send_vert_z_pos(double);
 
-    void send_face_r_col(double);
-    void send_face_g_col(double);
-    void send_face_b_col(double);
+    void send_face_red_col(int);
+    void send_face_green_col(int);
+    void send_face_blue_col(int);
 
     void send_joint_x(double);
     void send_joint_y(double);

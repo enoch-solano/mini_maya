@@ -21,11 +21,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->faceList, SIGNAL(itemClicked(QListWidgetItem*)), ui->mygl, SLOT(slot_get_selected_list_item(QListWidgetItem*)));
     connect(ui->vertexList, SIGNAL(itemClicked(QListWidgetItem*)), ui->mygl, SLOT(slot_get_selected_list_item(QListWidgetItem*)));
 
-    // connects spin boxes to MyGL
-    connect(ui->redSpin, SIGNAL(valueChanged(double)), ui->mygl, SLOT(slot_update_face_r_col(double)));
-    connect(ui->greenSpin, SIGNAL(valueChanged(double)), ui->mygl, SLOT(slot_update_face_g_col(double)));
-    connect(ui->blueSpin, SIGNAL(valueChanged(double)), ui->mygl, SLOT(slot_update_face_b_col(double)));
+    // connects sliders to corresponding face color slot
+    connect(ui->redFaceColorSlider, SIGNAL(valueChanged(int)), ui->mygl, SLOT(slot_update_face_red_col(int)));
+    connect(ui->greenFaceColorSlider, SIGNAL(valueChanged(int)), ui->mygl, SLOT(slot_update_face_green_col(int)));
+    connect(ui->blueFaceColorSlider, SIGNAL(valueChanged(int)), ui->mygl, SLOT(slot_update_face_blue_col(int)));
 
+
+    connect(ui->mygl, SIGNAL(send_face_red_col(int)), ui->redFaceColorSlider, SLOT(setValue(int)));
+    connect(ui->mygl, SIGNAL(send_face_green_col(int)), ui->greenFaceColorSlider, SLOT(setValue(int)));
+    connect(ui->mygl, SIGNAL(send_face_blue_col(int)), ui->blueFaceColorSlider, SLOT(setValue(int)));
+
+
+    // connects spin boxes to MyGL
     connect(ui->xSpin, SIGNAL(valueChanged(double)), ui->mygl, SLOT(slot_update_vert_x_pos(double)));
     connect(ui->ySpin, SIGNAL(valueChanged(double)), ui->mygl, SLOT(slot_update_vert_y_pos(double)));
     connect(ui->zSpin, SIGNAL(valueChanged(double)), ui->mygl, SLOT(slot_update_vert_z_pos(double)));
@@ -35,24 +42,18 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->mygl, SIGNAL(send_vert_y_pos(double)), ui->ySpin, SLOT(setValue(double)));
     connect(ui->mygl, SIGNAL(send_vert_z_pos(double)), ui->zSpin, SLOT(setValue(double)));
 
-    connect(ui->mygl, SIGNAL(send_face_r_col(double)), ui->redSpin, SLOT(setValue(double)));
-    connect(ui->mygl, SIGNAL(send_face_g_col(double)), ui->greenSpin, SLOT(setValue(double)));
-    connect(ui->mygl, SIGNAL(send_face_b_col(double)), ui->blueSpin, SLOT(setValue(double)));
-
     // connects buttons to MyGL
-    connect(ui->midButton, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_add_midpoint()));
-    connect(ui->triButton, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_triangulate_face()));
-    connect(ui->extrButton, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_extrude_face()));
-    connect(ui->subdivButton, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_subdivide_poly()));
+    connect(ui->actionAdd_Midpoint, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_add_midpoint()));
+    connect(ui->actionTriangulate_Face, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_triangulate_face()));
+    connect(ui->actionExtrude_Face, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_extrude_face()));
+    connect(ui->actionSubdivide_Mesh, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_subdivide_poly()));
 
     // allows MyGL to clear widget lists
     connect(ui->mygl, SIGNAL(clear_lists()), this, SLOT(slot_clear_lists()));
 
-    // button to import meshes
-    connect(ui->importButton, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_import_mesh()));
-
-    // button to import skeletons
-    connect(ui->importSkeletonButton, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_import_skeleton()));
+    // importing actions
+    connect(ui->importMeshAction, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_import_mesh()));
+    connect(ui->importSkeletonAction, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_import_skeleton()));
 
     // allows MyGL to update tree widget
     connect(ui->mygl, SIGNAL(send_root_joint(Joint*)), this, SLOT(slot_add_root_joint(Joint*)));
@@ -81,7 +82,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->mygl, SIGNAL(send_joint_info(Joint*)), this, SLOT(slot_add_joint_info(Joint*)));
     connect(ui->mygl, SIGNAL(clear_joint_info()), this, SLOT(slot_clear_joint_info()));
 
-    connect(ui->skinButton, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_simple_skin_mesh()));
+    // skin mesh operations
+    connect(ui->actionSkin_Mesh, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_simple_skin_mesh()));
+
+
+    this->showMaximized();
 }
 
 MainWindow::~MainWindow() {

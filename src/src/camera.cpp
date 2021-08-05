@@ -96,7 +96,7 @@ void Camera::TranslateAlongUp(float amt) {
 
 // rotate about y-axis of origin
 void Camera::RotateTheta(float deg) {
-    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), deg, up);
+    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), deg, right);
 
     eye -= ref;
     eye = glm::vec3(rotation * glm::vec4(eye, 1.f));
@@ -107,7 +107,7 @@ void Camera::RotateTheta(float deg) {
 
 // rotate about x-axis of origin
 void Camera::RotatePhi(float deg) {
-    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), deg, right);
+    glm::mat4 rotation = glm::rotate(glm::mat4(1.0f), deg, up);
 
     eye -= ref;
     eye = glm::vec3(rotation * glm::vec4(eye, 1.f));

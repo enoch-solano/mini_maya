@@ -96,6 +96,8 @@ void MyGL::resizeGL(int w, int h) {
 //This function is called by Qt any time your GL window is supposed to update
 //For example, when the function update() is called, paintGL is called implicitly.
 void MyGL::paintGL() {
+    this->setFocus();
+
     // Clear the screen so that we only see newly drawn images
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -294,6 +296,33 @@ void MyGL::keyPressEvent(QKeyEvent *e) {
 void MyGL::wheelEvent(QWheelEvent *e) {
     m_glCamera.Zoom(e->delta() * 0.02f);
     m_glCamera.RecomputeAttributes();
+
+    update();  // Calls paintGL, among other things
+}
+
+
+void MyGL::mousePressEvent(QMouseEvent *e) {
+    if (e->buttons() & (Qt::LeftButton | Qt::RightButton))     {
+        m_mousePosPrev = glm::vec2(e->x(), e->y());
+    }
+}
+
+void MyGL::mouseMoveEvent(QMouseEvent* e) {
+    glm::vec2 pos(e->x(), e->y());
+
+    if (e->buttons() & Qt::LeftButton) {
+        // Rotation
+        glm::vec2 diff = 0.01f * (pos - m_mousePosPrev);
+        m_mousePosPrev = pos;
+        m_glCamera.RotatePhi(-diff.x);
+        m_glCamera.RotateTheta(-diff.y);
+    } else if (e->buttons() & Qt::RightButton) {
+        // Panning
+        glm::vec2 diff = 0.05f * (pos - m_mousePosPrev);
+        m_mousePosPrev = pos;
+        m_glCamera.TranslateAlongRight(-diff.x);
+        m_glCamera.TranslateAlongUp(diff.y);
+    }
 
     update();  // Calls paintGL, among other things
 }
@@ -506,6 +535,19 @@ void MyGL::slot_subdivide_poly() {
 /*************************** SELECTED MESH COMPONENT ***************************/
 /*******************************************************************************/
 
+
+void MyGL::setFaceColorSliders(glm::vec3 col) {
+    col *= 255.f;
+
+    this->send_face_red_col(int(col.r));
+    this->send_face_green_col(int(col.g));
+    this->send_face_blue_col(int(col.b));
+}
+
+void MyGL::resetFaceColorSliders() {
+    setFaceColorSliders(glm::vec3(0.f));
+}
+
 void MyGL::slot_get_selected_list_item(QListWidgetItem *item) {
     // makes sure an item was clicked
     if (item != 0) {
@@ -516,10 +558,7 @@ void MyGL::slot_get_selected_list_item(QListWidgetItem *item) {
             this->destroy_drawable_comp();
             this->update_drawable_edge(edge);
 
-            // zeros out colors
-            this->send_face_r_col(0.0);
-            this->send_face_g_col(0.0);
-            this->send_face_b_col(0.0);
+            this->resetFaceColorSliders();
 
             // zeros out positions
             this->send_vert_x_pos(0.0);
@@ -533,12 +572,9 @@ void MyGL::slot_get_selected_list_item(QListWidgetItem *item) {
             this->destroy_drawable_comp();
             this->update_drawable_face(face->get_edge(), face->get_color());
 
-            // sends color to spinboxes
+            // sends color to sliders
             glm::vec3 col = face->get_color();
-
-            this->send_face_r_col(col.r);
-            this->send_face_g_col(col.g);
-            this->send_face_b_col(col.b);
+            this->setFaceColorSliders(col);
 
             // zeros out positions
             this->send_vert_x_pos(0.0);
@@ -553,9 +589,7 @@ void MyGL::slot_get_selected_list_item(QListWidgetItem *item) {
             this->update_drawable_vert(vert);
 
             // zeros out colors
-            this->send_face_r_col(0.0);
-            this->send_face_g_col(0.0);
-            this->send_face_b_col(0.0);
+            this->resetFaceColorSliders();
 
             // sends position to spinboxes
             glm::vec4 pos = vert->get_pos4();
@@ -606,50 +640,54 @@ void MyGL::destroy_drawable_comp() {
 /************************** MESH COMPONENT MODIFIERS ***************************/
 /*******************************************************************************/
 
-void MyGL::slot_update_face_r_col(double r) {
-    if (m_type_selected == FACE) {
-        Face *face = dynamic_cast<Face*>(mp_selected_comp);
-
-        glm::vec3 color = face->get_color();
-        color.r = r;
-        face->set_color(color);
-
-        this->update_drawable_face(face->get_edge(), face->get_color());
-        this->update_mesh();
-
-        update();
+void MyGL::update_face_col(ChannelSelected channel, float value) {
+    // return if the currently selected structure is not a face
+    if (m_type_selected != FACE) {
+        return;
     }
+
+    // assuming value is in the range [0,256)
+    // need to normalize this range to [0,1)
+    value /= 255.f;
+
+    Face *face = dynamic_cast<Face*>(mp_selected_comp);
+    glm::vec3 color = face->get_color();
+
+    // update the appropriate channel
+    switch(channel) {
+    case RED_CH:
+        color.r = value;
+        break;
+    case GREEN_CH:
+        color.g = value;
+        break;
+    case BLUE_CH:
+        color.b = value;
+        break;
+    default:
+        color = glm::vec3(0.f);
+    }
+
+    face->set_color(color);
+
+    this->update_drawable_face(face->get_edge(), face->get_color());
+    this->update_mesh();
+
+    update();
 }
 
-void MyGL::slot_update_face_g_col(double g) {
-    if (m_type_selected == FACE) {
-        Face *face =  dynamic_cast<Face*>(mp_selected_comp);
-
-        glm::vec3 color = face->get_color();
-        color.g = g;
-        face->set_color(color);
-
-        this->update_drawable_face(face->get_edge(), face->get_color());
-        this->update_mesh();
-
-        update();
-    }
+void MyGL::slot_update_face_red_col(int r) {
+    update_face_col(RED_CH, r);
 }
 
-void MyGL::slot_update_face_b_col(double b) {
-    if (m_type_selected == FACE) {
-        Face *face = dynamic_cast<Face*>(mp_selected_comp);
-
-        glm::vec3 color = face->get_color();
-        color.b = b;
-        face->set_color(color);
-
-        this->update_drawable_face(face->get_edge(), face->get_color());
-        this->update_mesh();
-
-        update();
-    }
+void MyGL::slot_update_face_green_col(int g) {
+    update_face_col(GREEN_CH, g);
 }
+
+void MyGL::slot_update_face_blue_col(int b) {
+    update_face_col(BLUE_CH, b);
+}
+
 
 void MyGL::slot_update_vert_x_pos(double x) {
     if (m_type_selected == VERT) {
