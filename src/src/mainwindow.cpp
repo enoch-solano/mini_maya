@@ -84,9 +84,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // skin mesh operations
     connect(ui->actionSkin_Mesh, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_simple_skin_mesh()));
-
-
-    this->showMaximized();
 }
 
 MainWindow::~MainWindow() {
