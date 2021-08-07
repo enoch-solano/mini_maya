@@ -333,7 +333,7 @@ void MyGL::mouseMoveEvent(QMouseEvent* e) {
 
 // reads in obj file, parses file, and sets up mesh
 void MyGL::slot_import_mesh() {
-    QString filename = QFileDialog::getOpenFileName(this, "Open an obj file!", "/home", tr("Object files (*.obj)"));
+    QString filename = QFileDialog::getOpenFileName(this, "Import Mesh", "../src/meshes", tr("Object files (*.obj)"));
 
     // condition in case user cancels
     if (filename == nullptr) {
@@ -741,7 +741,7 @@ void MyGL::slot_update_vert_z_pos(double z) {
 
 // imports skeleton from JSON file
 void MyGL::slot_import_skeleton() {
-    QString filename = QFileDialog::getOpenFileName(this, "Open a json file!", "/home", tr("JSON files (*.json)"));
+    QString filename = QFileDialog::getOpenFileName(this, "Select Skeleton", "../src/skeletons", tr("JSON files (*.json)"));
 
     // condition in case user cancels
     if (filename == nullptr) {
