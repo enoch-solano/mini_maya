@@ -101,6 +101,10 @@ int Joint::get_id() {
     return m_id;
 }
 
+QString Joint::get_name() {
+    return m_name;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // represents the concatenation of a joint's position and

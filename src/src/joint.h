@@ -62,6 +62,7 @@ public:
     bool is_skinning();
 
     int get_id();
+    QString get_name();
 
 
     // represents the concatenation of a joint's position and

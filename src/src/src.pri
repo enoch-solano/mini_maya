@@ -17,7 +17,8 @@ SOURCES += \
     $$PWD/components.cpp \
     $$PWD/mesh.cpp \
     $$PWD/drawablecomponents.cpp \
-    $$PWD/joint.cpp
+    $$PWD/joint.cpp \
+    $$PWD/jointinfodisplay.cpp
 
 HEADERS += \
     $$PWD/la.h \
@@ -34,4 +35,5 @@ HEADERS += \
     $$PWD/components.h \
     $$PWD/mesh.h \
     $$PWD/drawablecomponents.h \
-    $$PWD/joint.h
+    $$PWD/joint.h \
+    $$PWD/jointinfodisplay.h

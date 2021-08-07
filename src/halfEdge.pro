@@ -17,7 +17,8 @@ INCLUDEPATH += include
 include(src/src.pri)
 
 FORMS += forms/mainwindow.ui \
-    forms/cameracontrolshelp.ui
+    forms/cameracontrolshelp.ui \
+    forms/jointinfodisplay.ui
 
 RESOURCES += glsl.qrc
 

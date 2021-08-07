@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1698</width>
-    <height>913</height>
+    <width>1606</width>
+    <height>856</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,33 +27,6 @@
       <y>11</y>
       <width>841</width>
       <height>571</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="textEdit_22">
-    <property name="geometry">
-     <rect>
-      <x>1310</x>
-      <y>630</y>
-      <width>331</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="html">
-     <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p align=&quot;center&quot; style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:8pt; font-weight:600; text-decoration: underline;&quot;&gt;JOINT INFO&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-    </property>
-   </widget>
-   <widget class="QTextEdit" name="jointInfo">
-    <property name="geometry">
-     <rect>
-      <x>1320</x>
-      <y>670</y>
-      <width>311</width>
-      <height>181</height>
      </rect>
     </property>
    </widget>
@@ -162,7 +135,7 @@ p, li { white-space: pre-wrap; }
      <set>Qt::AlignCenter</set>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
-     <item row="0" column="0">
+     <item row="0" column="1">
       <widget class="QTreeWidget" name="jointTree">
        <column>
         <property name="text">
@@ -176,9 +149,9 @@ p, li { white-space: pre-wrap; }
    <widget class="QGroupBox" name="meshCompModifiers">
     <property name="geometry">
      <rect>
-      <x>1310</x>
+      <x>1320</x>
       <y>30</y>
-      <width>251</width>
+      <width>241</width>
       <height>361</height>
      </rect>
     </property>
@@ -382,9 +355,9 @@ QSlider::handle:horizontal {
    <widget class="QGroupBox" name="jointsDataDisplay_2">
     <property name="geometry">
      <rect>
-      <x>1290</x>
-      <y>430</y>
-      <width>291</width>
+      <x>1300</x>
+      <y>400</y>
+      <width>281</width>
       <height>191</height>
      </rect>
     </property>
@@ -574,13 +547,158 @@ QSlider::handle:horizontal {
      </item>
     </layout>
    </widget>
+   <widget class="QGroupBox" name="groupBox_5">
+    <property name="geometry">
+     <rect>
+      <x>1300</x>
+      <y>610</y>
+      <width>281</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>12</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Joint Info</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_9">
+     <item row="0" column="1">
+      <widget class="QLabel" name="posLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UNK</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Position:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Degrees about AoR:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="degLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UNK</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="aorLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UNK</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Axis of Roation (AoR):</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_13">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Joint ID:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="jointIDLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UNK</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_14">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Joint Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="jointNameLabel">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>UNK</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1698</width>
+     <width>1606</width>
      <height>20</height>
     </rect>
    </property>
@@ -620,11 +738,18 @@ QSlider::handle:horizontal {
     </property>
     <addaction name="actionSkin_Mesh"/>
    </widget>
+   <widget class="QMenu" name="menuInfo">
+    <property name="title">
+     <string>Info</string>
+    </property>
+    <addaction name="actionJoint_Info"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuImport"/>
    <addaction name="menuMesh_Operators"/>
    <addaction name="menuSkeleton_Operators"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuInfo"/>
   </widget>
   <action name="actionQuit">
    <property name="text">
@@ -693,6 +818,11 @@ QSlider::handle:horizontal {
    </property>
    <property name="shortcut">
     <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="actionJoint_Info">
+   <property name="text">
+    <string>Joint Info</string>
    </property>
   </action>
  </widget>

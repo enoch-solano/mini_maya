@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include <ui_mainwindow.h>
 #include "cameracontrolshelp.h"
+#include "jointinfodisplay.h"
 
 #include <iostream>
 
@@ -84,6 +85,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // skin mesh operations
     connect(ui->actionSkin_Mesh, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_simple_skin_mesh()));
+
+
+
+    connect(ui->actionJoint_Info, SIGNAL(triggered(bool)), this, SLOT(slot_show_joint_info()));
+
 }
 
 MainWindow::~MainWindow() {
@@ -97,6 +103,12 @@ void MainWindow::on_actionQuit_triggered() {
 void MainWindow::on_actionCamera_Controls_triggered() {
     CameraControlsHelp* c = new CameraControlsHelp();
     c->show();
+}
+
+void MainWindow::slot_show_joint_info() {
+    std::cout << "showing data" << std::endl;
+    JointInfoDisplay* d = new JointInfoDisplay();
+    d->show();
 }
 
 void MainWindow::slot_add_edges(QVector<HalfEdge*> edges) {
@@ -125,27 +137,24 @@ void MainWindow::slot_add_joint_info(Joint *joint) {
     glm::vec3 pos = joint->get_pos();
     glm::vec4 ori = joint->get_ori();
 
-    QString joint_info = QString("POSITION w.r.t. World:\n");
-    joint_info += QString("    x: %1\n").arg(pos.x);
-    joint_info += QString("    y: %1\n").arg(pos.y);
-    joint_info += QString("    z: %1\n").arg(pos.z);
+    QString posText = QString("(%1, %2, %3)").arg(pos.x).arg(pos.y).arg(pos.y);
+    ui->posLabel->setText(posText);
 
-    joint_info += QString("ORIENTATION:\n");
-    joint_info += QString("  axis of rotation, v  \n");
-    joint_info += QString("    vx: %1  \n").arg(ori[1]);
-    joint_info += QString("    vy: %1  \n").arg(ori[2]);
-    joint_info += QString("    vz: %1  \n").arg(ori[3]);
-    joint_info += QString("  deg. about axis of rot.  \n");
-    joint_info += QString("    deg: %1  \n").arg(glm::degrees(ori[0]));
+    QString aorText = QString("(%1, %2, %3)").arg(ori[1]).arg(ori[2]).arg(ori[3]);
+    ui->aorLabel->setText(aorText);
 
-    joint_info += QString("JOINT ID:\n");
-    joint_info += QString("    ID: %1  \n").arg(joint->get_id());
+    QString degText = QString("%1").arg(glm::degrees(ori[0]));
+    ui->degLabel->setText(degText);
 
-    ui->jointInfo->setText(joint_info);
+    QString idText = QString("%1").arg(joint->get_id());
+    ui->jointIDLabel->setText(idText);
+
+    QString nameText = QString("%1").arg(joint->get_name());
+    ui->jointNameLabel->setText(nameText);
 }
 
 void MainWindow::slot_clear_joint_info() {
-    ui->jointInfo->clear();
+//    ui->jointInfo->clear();
 }
 
 // clears the lists in the widget WITHOUT deleting items

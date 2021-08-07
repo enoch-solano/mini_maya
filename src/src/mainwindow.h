@@ -20,13 +20,14 @@ public:
 
 private slots:
     void on_actionQuit_triggered();
-
     void on_actionCamera_Controls_triggered();
+    void slot_show_joint_info();
 
 private:
     Ui::MainWindow *ui;
 
 public slots:
+
     void slot_add_edges(QVector<HalfEdge*>);
     void slot_add_faces(QVector<Face*>);
     void slot_add_verts(QVector<Vertex*>);
