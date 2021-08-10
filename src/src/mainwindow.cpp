@@ -90,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(ui->actionJoint_Info, SIGNAL(triggered(bool)), this, SLOT(slot_show_joint_info()));
 
+    connect(ui->faceColorModifiers, SIGNAL(toggled(bool)), this, SLOT(slot_toggle_face_color_sliders(bool)));
 }
 
 MainWindow::~MainWindow() {
@@ -106,9 +107,35 @@ void MainWindow::on_actionCamera_Controls_triggered() {
 }
 
 void MainWindow::slot_show_joint_info() {
-    std::cout << "showing data" << std::endl;
     JointInfoDisplay* d = new JointInfoDisplay();
     d->show();
+}
+
+inline QString generateStyle(QString sliderColor) {
+    QString style("QSlider::groove:horizontal {"
+                      "border: 1px solid #999999;"
+                      "height: 8px;" /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+                      "background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(" + sliderColor + ", 255));"
+                      "margin: 2px 0;"
+                  "}"
+                  "QSlider::handle:horizontal {"
+                      "background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);"
+                      "border: 1px solid #5c5c5c;"
+                      "width: 18px;"
+                     " margin: -2px 0;" /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+                      "border-radius: 3px;"
+                  "}");
+    return style;
+}
+
+void MainWindow::slot_toggle_face_color_sliders(bool isClicked) {
+    QString redSliderColor   = isClicked ? "255, 0, 0" : "255, 255, 255";
+    QString greenSliderColor = isClicked ? "0, 255, 0" : "255, 255, 255";
+    QString blueSliderColor  = isClicked ? "0, 0, 255" : "255, 255, 255";
+
+    ui->redFaceColorSlider->setStyleSheet(generateStyle(redSliderColor));
+    ui->greenFaceColorSlider->setStyleSheet(generateStyle(greenSliderColor));
+    ui->blueFaceColorSlider->setStyleSheet(generateStyle(blueSliderColor));
 }
 
 void MainWindow::slot_add_edges(QVector<HalfEdge*> edges) {

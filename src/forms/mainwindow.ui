@@ -193,17 +193,20 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
-      <widget class="QGroupBox" name="groupBox">
+      <widget class="QGroupBox" name="faceColorModifiers">
        <property name="font">
         <font>
          <pointsize>10</pointsize>
         </font>
        </property>
        <property name="title">
-        <string>Modify Selected Face Color</string>
+        <string>Modify Face Color</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
@@ -288,17 +291,20 @@ QSlider::handle:horizontal {
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QGroupBox" name="groupBox_2">
+      <widget class="QGroupBox" name="vertexPositionModifiers">
        <property name="font">
         <font>
          <pointsize>10</pointsize>
         </font>
        </property>
        <property name="title">
-        <string>Modify Selected Vertex Position</string>
+        <string>Modify Vertex Position</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
@@ -375,12 +381,12 @@ QSlider::handle:horizontal {
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="jointsDataDisplay_2">
+   <widget class="QGroupBox" name="jointModifiers">
     <property name="geometry">
      <rect>
       <x>530</x>
       <y>650</y>
-      <width>281</width>
+      <width>291</width>
       <height>171</height>
      </rect>
     </property>
@@ -396,6 +402,12 @@ QSlider::handle:horizontal {
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+    <property name="flat">
+     <bool>false</bool>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
     </property>
     <layout class="QGridLayout" name="gridLayout_8">
      <item row="0" column="1">
@@ -570,12 +582,12 @@ QSlider::handle:horizontal {
      </item>
     </layout>
    </widget>
-   <widget class="QGroupBox" name="groupBox_5">
+   <widget class="QGroupBox" name="jointInfo">
     <property name="geometry">
      <rect>
-      <x>820</x>
+      <x>830</x>
       <y>650</y>
-      <width>281</width>
+      <width>271</width>
       <height>171</height>
      </rect>
     </property>
@@ -846,6 +858,11 @@ QSlider::handle:horizontal {
   <action name="actionJoint_Info">
    <property name="text">
     <string>Joint Info</string>
+   </property>
+  </action>
+  <action name="actionDisable">
+   <property name="text">
+    <string>Disable</string>
    </property>
   </action>
  </widget>

@@ -18,10 +18,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+bool m_isDisable = false;
+
 private slots:
     void on_actionQuit_triggered();
     void on_actionCamera_Controls_triggered();
     void slot_show_joint_info();
+
+    void slot_toggle_face_color_sliders(bool);
 
 private:
     Ui::MainWindow *ui;
