@@ -19,9 +19,9 @@ glm::vec4 Mesh::get_nor(std::vector<glm::vec4> vert_pos, int i, int offset) {
                                glm::vec3(d2.x, d2.y, d2.z));
 
     // gets the next vertex if the length of the norm is zero (i.e. parallel edges)
-    if (glm::length(nor) < 1e-6) {
-        return get_nor(vert_pos, i, offset + 1);
-    }
+//    if (glm::length(nor) < 1e-6) {
+//        return get_nor(vert_pos, i, offset + 1);
+//    }
 
     nor = glm::normalize(nor);
 

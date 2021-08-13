@@ -700,50 +700,57 @@ void MyGL::slot_update_face_blue_col(int b) {
     update_face_col(BLUE_CH, b);
 }
 
+void MyGL::updateVertPos(double val, int axis, Vertex *vert) {
+    glm::vec4 pos = vert->get_pos4();
+
+    switch(axis) {
+    case 0:
+        pos.x = val;
+        break;
+    case 1:
+        pos.y = val;
+        break;
+    case 2:
+        pos.z = val;
+        break;
+    default:
+        break;
+    }
+
+    vert->set_pos(pos);
+
+    this->update_drawable_vert(vert);
+    this->update_mesh();
+
+    update();
+}
+
 
 void MyGL::slot_update_vert_x_pos(double x) {
-    if (m_type_selected == VERT) {
-        Vertex *vert = dynamic_cast<Vertex*>(mp_selected_comp);
-
-        glm::vec4 pos = vert->get_pos4();
-        pos.x = x;
-        vert->set_pos(pos);
-
-        this->update_drawable_vert(vert);
-        this->update_mesh();
-
-        update();
+    if (m_type_selected != VERT) {
+        return;
     }
+
+    Vertex *vert = dynamic_cast<Vertex*>(mp_selected_comp);
+    this->updateVertPos(x, 0, vert);
 }
 
 void MyGL::slot_update_vert_y_pos(double y) {
-    if (m_type_selected == VERT) {
-        Vertex *vert = dynamic_cast<Vertex*>(mp_selected_comp);
-
-        glm::vec4 pos = vert->get_pos4();
-        pos.y = y;
-        vert->set_pos(pos);
-
-        this->update_drawable_vert(vert);
-        this->update_mesh();
-
-        update();
+    if (m_type_selected != VERT) {
+        return;
     }
+
+    Vertex *vert = dynamic_cast<Vertex*>(mp_selected_comp);
+    this->updateVertPos(y, 1, vert);
 }
 
 void MyGL::slot_update_vert_z_pos(double z) {
-    if (m_type_selected == VERT) {
-        Vertex *vert = dynamic_cast<Vertex*>(mp_selected_comp);
-
-        glm::vec4 pos = vert->get_pos4();
-        pos.z = z;
-        vert->set_pos(pos);
-
-        this->update_drawable_vert(vert);
-        this->update_mesh();
-
-        update();
+    if (m_type_selected != VERT) {
+        return;
     }
+
+    Vertex *vert = dynamic_cast<Vertex*>(mp_selected_comp);
+    this->updateVertPos(z, 2, vert);
 }
 
 
@@ -839,6 +846,7 @@ void MyGL::generate_children(Joint *parent, QJsonArray j_children) {
 
 // draws a given skeleton
 void MyGL::draw_skeleton(Joint *j) {
+    j->destroy();
     j->create();
     mp_currCompShader->draw(*j);
 

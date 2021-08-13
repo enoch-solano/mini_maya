@@ -66,6 +66,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // connects tree to MyGL (w.r.t. when an item is pressed)
     connect(ui->jointTree, SIGNAL(itemPressed(QTreeWidgetItem*,int)), ui->mygl, SLOT(slot_get_selected_joint(QTreeWidgetItem*)));
+    connect(ui->jointTree, SIGNAL(itemPressed(QTreeWidgetItem*,int)), this, SLOT(slot_joint_selected(QTreeWidgetItem*)));
 
     // connects additive/subtractive buttons to MyGL
     connect(ui->plusX, SIGNAL(clicked(bool)), ui->mygl, SLOT(slot_add_rotate_joint_x()));
@@ -190,6 +191,15 @@ void MainWindow::slot_vert_selected(QListWidgetItem *item) {
 
     this->greyOutModifiers();
     ui->vertexPositionModifiers->setChecked(true);
+}
+
+void MainWindow::slot_joint_selected(QTreeWidgetItem *item) {
+    if (item == 0) {
+        return;
+    }
+
+    this->greyOutModifiers();
+    ui->jointModifiers->setChecked(true);
 }
 
 void MainWindow::slot_add_edges(QVector<HalfEdge*> edges) {

@@ -53,6 +53,7 @@ public slots:
     void slot_edge_selected(QListWidgetItem *item);
     void slot_face_selected(QListWidgetItem *item);
     void slot_vert_selected(QListWidgetItem *item);
+    void slot_joint_selected(QTreeWidgetItem *item);
 };
 
 

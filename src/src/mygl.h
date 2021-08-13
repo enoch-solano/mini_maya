@@ -131,6 +131,8 @@ protected:
 
     void updateSelectedComp(QListWidgetItem *item);
 
+    void updateVertPos(double val, int axis, Vertex *vert);
+
 
 public slots:
     void slot_get_selected_list_item(QListWidgetItem *item);
