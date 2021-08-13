@@ -158,7 +158,7 @@ void MyGL::paintGL() {
 }
 
 void MyGL::set_default_shaders() {
-    mp_currMeshShader = &m_progLambert;
+    mp_currMeshShader = isLambertShader ? &m_progLambert : &m_progFlat;
     mp_currCompShader = &m_progFlat;
 }
 
@@ -839,6 +839,13 @@ void MyGL::draw_skeleton(Joint *j) {
 /*******************************************************************************/
 /************************** MESH/SKELETON MODIFIERS ****************************/
 /*******************************************************************************/
+
+void MyGL::slot_toggle_shader() {
+    isLambertShader = !isLambertShader;
+    mp_currMeshShader = isLambertShader ? &m_progLambert : &m_progFlat;
+
+    update();
+}
 
 void MyGL::slot_simple_skin_mesh() {
     if (mp_root_joint == nullptr || m_mesh.is_skinned()) {

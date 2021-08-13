@@ -30,6 +30,12 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    void greyOutModifiers();
+    void greyOutMeshModifiers();
+    void greyOutJointModifiers();
+    void greyOutFaceSliders();
+    void greyOutVertexSpinboxes();
+
 public slots:
 
     void slot_add_edges(QVector<HalfEdge*>);
@@ -43,6 +49,10 @@ public slots:
 
     void slot_add_joint_info(Joint *joint);
     void slot_clear_joint_info();
+
+    void slot_edge_selected(QListWidgetItem *item);
+    void slot_face_selected(QListWidgetItem *item);
+    void slot_vert_selected(QListWidgetItem *item);
 };
 
 

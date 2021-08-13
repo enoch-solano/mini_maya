@@ -53,6 +53,8 @@ private:
     ShaderProgram *mp_currMeshShader;   // shader to draw the mesh with
     ShaderProgram *mp_currCompShader;   // shader to draw the joints/components
 
+    bool isLambertShader = true;
+
     Mesh m_mesh;
     Joint *mp_root_joint;       // root of skeleton
     Joint *mp_selected_joint;   // currently selected joint
@@ -123,6 +125,7 @@ protected:
     void setFaceColorSliders(glm::vec3 col);
     void resetFaceColorSliders();
 
+
 public slots:
     void slot_get_selected_list_item(QListWidgetItem *item);
 
@@ -145,6 +148,8 @@ public slots:
     void slot_get_selected_joint(QTreeWidgetItem *item);
 
     void slot_simple_skin_mesh();
+
+    void slot_toggle_shader();
 
     void slot_add_rotate_joint_x();
     void slot_sub_rotate_joint_x();

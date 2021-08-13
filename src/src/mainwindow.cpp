@@ -22,6 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->faceList, SIGNAL(itemClicked(QListWidgetItem*)), ui->mygl, SLOT(slot_get_selected_list_item(QListWidgetItem*)));
     connect(ui->vertexList, SIGNAL(itemClicked(QListWidgetItem*)), ui->mygl, SLOT(slot_get_selected_list_item(QListWidgetItem*)));
 
+
+    connect(ui->edgeList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_edge_selected(QListWidgetItem*)));
+    connect(ui->faceList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_face_selected(QListWidgetItem*)));
+    connect(ui->vertexList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_vert_selected(QListWidgetItem*)));
+
     // connects sliders to corresponding face color slot
     connect(ui->redFaceColorSlider, SIGNAL(valueChanged(int)), ui->mygl, SLOT(slot_update_face_red_col(int)));
     connect(ui->greenFaceColorSlider, SIGNAL(valueChanged(int)), ui->mygl, SLOT(slot_update_face_green_col(int)));
@@ -85,6 +90,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // skin mesh operations
     connect(ui->actionSkin_Mesh, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_simple_skin_mesh()));
+    connect(ui->actionToggle_Mesh_Shader, SIGNAL(triggered(bool)), ui->mygl, SLOT(slot_toggle_shader()));
 
 
 
@@ -112,30 +118,79 @@ void MainWindow::slot_show_joint_info() {
 }
 
 inline QString generateStyle(QString sliderColor) {
-    QString style("QSlider::groove:horizontal {"
-                      "border: 1px solid #999999;"
-                      "height: 8px;" /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-                      "background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(" + sliderColor + ", 255));"
-                      "margin: 2px 0;"
-                  "}"
-                  "QSlider::handle:horizontal {"
-                      "background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);"
-                      "border: 1px solid #5c5c5c;"
-                      "width: 18px;"
-                     " margin: -2px 0;" /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
-                      "border-radius: 3px;"
-                  "}");
+    QString style(
+        "QSlider::groove:horizontal {"
+            "border: 1px solid #999999;"
+            "height: 8px;" /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
+            "background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(" + sliderColor + ", 255));"
+            "margin: 2px 0;"
+        "}"
+        "QSlider::handle:horizontal {"
+            "background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #b4b4b4, stop:1 #8f8f8f);"
+            "border: 1px solid #5c5c5c;"
+            "width: 18px;"
+            " margin: -2px 0;" /* handle is placed by default on the contents rect of the groove. Expand outside the groove */
+            "border-radius: 3px;"
+        "}");
     return style;
 }
 
 void MainWindow::slot_toggle_face_color_sliders(bool isClicked) {
-    QString redSliderColor   = isClicked ? "255, 0, 0" : "255, 255, 255";
-    QString greenSliderColor = isClicked ? "0, 255, 0" : "255, 255, 255";
-    QString blueSliderColor  = isClicked ? "0, 0, 255" : "255, 255, 255";
+    QString redSliderColor   = isClicked ? "255, 0, 0" : "150, 150, 150";
+    QString greenSliderColor = isClicked ? "0, 255, 0" : "150, 150, 150";
+    QString blueSliderColor  = isClicked ? "0, 0, 255" : "150, 150, 150";
 
     ui->redFaceColorSlider->setStyleSheet(generateStyle(redSliderColor));
     ui->greenFaceColorSlider->setStyleSheet(generateStyle(greenSliderColor));
     ui->blueFaceColorSlider->setStyleSheet(generateStyle(blueSliderColor));
+}
+
+void MainWindow::greyOutModifiers() {
+    this->greyOutMeshModifiers();
+    this->greyOutJointModifiers();
+}
+
+void MainWindow::greyOutMeshModifiers() {
+    this->greyOutFaceSliders();
+    this->greyOutVertexSpinboxes();
+}
+
+void MainWindow::greyOutJointModifiers() {
+    ui->jointModifiers->setChecked(false);
+}
+
+void MainWindow::greyOutFaceSliders() {
+    ui->faceColorModifiers->setChecked(false);
+}
+
+void MainWindow::greyOutVertexSpinboxes() {
+    ui->vertexPositionModifiers->setChecked(false);
+}
+
+void MainWindow::slot_edge_selected(QListWidgetItem* item) {
+    if (item == 0) {
+        return;
+    }
+
+    this->greyOutModifiers();
+}
+
+void MainWindow::slot_face_selected(QListWidgetItem *item) {
+    if (item == 0) {
+        return;
+    }
+
+    this->greyOutModifiers();
+    ui->faceColorModifiers->setChecked(true);
+}
+
+void MainWindow::slot_vert_selected(QListWidgetItem *item) {
+    if (item == 0) {
+        return;
+    }
+
+    this->greyOutModifiers();
+    ui->vertexPositionModifiers->setChecked(true);
 }
 
 void MainWindow::slot_add_edges(QVector<HalfEdge*> edges) {

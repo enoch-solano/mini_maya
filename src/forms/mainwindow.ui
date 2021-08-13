@@ -208,6 +208,9 @@
        <property name="checkable">
         <bool>true</bool>
        </property>
+       <property name="checked">
+        <bool>false</bool>
+       </property>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
          <widget class="QSlider" name="redFaceColorSlider">
@@ -215,7 +218,7 @@
            <string notr="true">QSlider::groove:horizontal {
     border: 1px solid #999999;
     height: 8px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(255, 0, 0, 255));
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(150, 150, 150, 255));
     margin: 2px 0;
 }
 
@@ -241,7 +244,7 @@ QSlider::handle:horizontal {
            <string notr="true">QSlider::groove:horizontal {
     border: 1px solid #999999;
     height: 8px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 255, 0, 255));
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(150, 150, 150, 255));
     margin: 2px 0;
 }
 
@@ -267,7 +270,7 @@ QSlider::handle:horizontal {
            <string notr="true">QSlider::groove:horizontal {
     border: 1px solid #999999;
     height: 8px; /* the groove expands to the size of the slider by default. by giving it a height, it has a fixed size */
-    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(0, 0, 255, 255));
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 0, 0, 255), stop:1 rgba(150, 150, 150, 255));
     margin: 2px 0;
 }
 
@@ -305,6 +308,9 @@ QSlider::handle:horizontal {
        </property>
        <property name="checkable">
         <bool>true</bool>
+       </property>
+       <property name="checked">
+        <bool>false</bool>
        </property>
        <layout class="QGridLayout" name="gridLayout_5">
         <item row="0" column="0">
@@ -408,6 +414,9 @@ QSlider::handle:horizontal {
     </property>
     <property name="checkable">
      <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
     </property>
     <layout class="QGridLayout" name="gridLayout_8">
      <item row="0" column="1">
@@ -766,6 +775,8 @@ QSlider::handle:horizontal {
     <addaction name="actionExtrude_Face"/>
     <addaction name="separator"/>
     <addaction name="actionAdd_Midpoint"/>
+    <addaction name="separator"/>
+    <addaction name="actionToggle_Mesh_Shader"/>
    </widget>
    <widget class="QMenu" name="menuSkeleton_Operators">
     <property name="title">
@@ -863,6 +874,14 @@ QSlider::handle:horizontal {
   <action name="actionDisable">
    <property name="text">
     <string>Disable</string>
+   </property>
+  </action>
+  <action name="actionToggle_Mesh_Shader">
+   <property name="text">
+    <string>Toggle Mesh Shader</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
    </property>
   </action>
  </widget>
