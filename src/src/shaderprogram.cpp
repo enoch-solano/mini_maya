@@ -5,7 +5,7 @@
 ShaderProgram::ShaderProgram(GLWidget277 *context)
     : vertShader(), fragShader(), prog(),
       attrPos(-1), attrNor(-1), attrCol(-1), attrJointID(-1), attrJointWeight(-1),
-      unifModel(-1), unifModelInvTr(-1), unifViewProj(-1), unifColor(-1), unifBindMats(-1),
+      unifModel(-1), unifCamPos(-1), unifModelInvTr(-1), unifViewProj(-1), unifColor(-1), unifBindMats(-1),
       unifOverallTrans(-1), context(context)
 {}
 
@@ -64,6 +64,7 @@ void ShaderProgram::create(const char *vertfile, const char *fragfile) {
     unifModelInvTr = context->glGetUniformLocation(prog, "u_ModelInvTr");
     unifViewProj   = context->glGetUniformLocation(prog, "u_ViewProj");
     unifColor      = context->glGetUniformLocation(prog, "u_Color");
+    unifCamPos      = context->glGetUniformLocation(prog, "u_CamPos");
 
     // handles for the skeleton shaders
     attrJointID      = context->glGetAttribLocation(prog, "vs_JointID");
@@ -106,6 +107,15 @@ void ShaderProgram::set_overall_trans(std::vector<glm::mat4> &overall_transform)
     if (unifOverallTrans != -1) {
         context->glUniformMatrix4fv(unifOverallTrans, overall_transform.size(),
                                     GL_FALSE, &mat_arr[0][0][0]);
+    }
+}
+
+void ShaderProgram::setCamPos(glm::vec3 pos) {
+    useMe();
+
+    if(unifCamPos != -1)
+    {
+        context->glUniform3fv(unifCamPos, 1, &pos[0]);
     }
 }
 

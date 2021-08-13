@@ -25,6 +25,8 @@ public:
     int unifViewProj;   // A handle for the "uniform" mat4 representing combined projection and view matrices in the vertex shader
     int unifColor;      // A handle for the "uniform" vec4 representing color of geometry in the vertex shader
 
+    int unifCamPos; // A handle for the "uniform" vec4 representing color of geometry in the vertex shader
+
     // handles for the skeleton shaders
     int attrJointID;
     int attrJointWeight;
@@ -39,6 +41,8 @@ public:
     // Tells our OpenGL context to use this shader to draw things
     void useMe();
 
+    // Pass the given color to this shader on the GPU
+    void setCamPos(glm::vec3 pos);
     // Pass the given model matrix to this shader on the GPU
     void setModelMatrix(const glm::mat4 &model);
     // Pass the given Projection * View matrix to this shader on the GPU

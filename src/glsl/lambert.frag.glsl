@@ -13,11 +13,14 @@
 
 uniform vec4 u_Color; // The color with which to render this instance of geometry.
 
+uniform vec3 u_CamPos;
+
 // These are the interpolated values out of the rasterizer, so you can't know
 // their specific values without knowing the vertices that contributed to them
 in vec4 fs_Nor;
 in vec4 fs_LightVec;
 in vec4 fs_Col;
+in vec3 fs_Pos;
 
 out vec4 out_Col; // This is the final output color that you will see on your
 // screen for the pixel that is currently being processed.
@@ -29,7 +32,9 @@ void main()
     vec4 diffuseColor = fs_Col;
 
     // Calculate the diffuse term for Lambert shading
-    float diffuseTerm = dot(normalize(fs_Nor), normalize(fs_LightVec));
+    vec3 lightVec = normalize(u_CamPos - fs_Pos);
+    float diffuseTerm = dot(normalize(fs_Nor.xyz), normalize(lightVec));
+//    float diffuseTerm = dot(normalize(fs_Nor), normalize(fs_LightVec));
     // Avoid negative lighting values
     diffuseTerm = clamp(diffuseTerm, 0, 1);
 

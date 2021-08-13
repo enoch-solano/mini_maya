@@ -104,6 +104,7 @@ void MyGL::paintGL() {
     m_progFlat.setViewProjMatrix(m_glCamera.getViewProj());
     m_progLambert.setViewProjMatrix(m_glCamera.getViewProj());
     m_progSkeleton.setViewProjMatrix(m_glCamera.getViewProj());
+    m_progLambert.setCamPos(m_glCamera.eye);
 
     if (m_mesh.is_skinned()) {
         std::vector<glm::mat4> bind_mats;
@@ -223,16 +224,16 @@ void MyGL::keyPressEvent(QKeyEvent *e) {
         break;
 
     case (Qt::Key_I):
-        m_glCamera.RotatePhi(-amount * .1);
+        m_glCamera.RotateAboutRight(-amount * .1);
         break;
     case (Qt::Key_K):
-        m_glCamera.RotatePhi(amount * .1);
+        m_glCamera.RotateAboutRight(amount * .1);
         break;
     case (Qt::Key_J):
-        m_glCamera.RotateTheta(amount * .1);
+        m_glCamera.RotateAboutUp(amount * .1);
         break;
     case (Qt::Key_L):
-        m_glCamera.RotateTheta(-amount * .1);
+        m_glCamera.RotateAboutUp(-amount * .1);
         break;
     }
 
@@ -294,7 +295,7 @@ void MyGL::keyPressEvent(QKeyEvent *e) {
 }
 
 void MyGL::wheelEvent(QWheelEvent *e) {
-    m_glCamera.Zoom(e->delta() * 0.01f);
+    m_glCamera.TranslateAlongLook(e->delta() * 0.01f);
     m_glCamera.RecomputeAttributes();
 
     update();  // Calls paintGL, among other things
@@ -319,10 +320,10 @@ void MyGL::mouseMoveEvent(QMouseEvent* e) {
 
     if (e->buttons() & Qt::RightButton) {
         // Rotation
-        glm::vec2 diff = 0.01f * (pos - m_mousePosPrev);
+        glm::vec2 diff = 0.5f * (pos - m_mousePosPrev);
         m_mousePosPrev = pos;
-        m_glCamera.RotatePhi(-diff.x);
-        m_glCamera.RotateTheta(-diff.y);
+        m_glCamera.RotateAboutRight(-diff.y);
+        m_glCamera.RotateAboutUp(-diff.x);
 
         // Panning
 //        glm::vec2 diff = 0.05f * (pos - m_mousePosPrev);

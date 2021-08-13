@@ -2,9 +2,13 @@
 
 #include <la.h>
 
+#define SPHERICAL_CAMERA
+
 //A perspective projection camera
 //Receives its eye position and reference point from the scene XML file
-class Camera {
+class Camera
+{
+    friend class Ray;
 public:
     Camera();
     Camera(unsigned int w, unsigned int h);
@@ -18,7 +22,10 @@ public:
 
     //Computed attributes
     float aspect;
-
+#ifdef SPHERICAL_CAMERA
+    glm::vec4 unit_eye, unit_forward, unit_up, unit_right;
+    float theta, phi, zoom;
+#endif
     glm::vec3 eye,      //The position of the camera in world space
               ref,      //The point in world space towards which the camera is pointing
               look,     //The normalized vector from eye to ref. Is also known as the camera's "forward" vector.
@@ -38,9 +45,4 @@ public:
     void TranslateAlongLook(float amt);
     void TranslateAlongRight(float amt);
     void TranslateAlongUp(float amt);
-
-    void RotateTheta(float deg);
-    void RotatePhi(float deg);
-
-    void Zoom(float amt);
 };
