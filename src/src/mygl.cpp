@@ -294,7 +294,7 @@ void MyGL::keyPressEvent(QKeyEvent *e) {
 }
 
 void MyGL::wheelEvent(QWheelEvent *e) {
-    m_glCamera.Zoom(e->delta() * 0.02f);
+    m_glCamera.Zoom(e->delta() * 0.01f);
     m_glCamera.RecomputeAttributes();
 
     update();  // Calls paintGL, among other things
@@ -302,7 +302,14 @@ void MyGL::wheelEvent(QWheelEvent *e) {
 
 
 void MyGL::mousePressEvent(QMouseEvent *e) {
-    if (e->buttons() & (Qt::LeftButton | Qt::RightButton))     {
+    if (e->buttons() & Qt::LeftButton) {
+        // casts ray from camera
+        Ray ray(m_glCamera, e->x(), e->y());
+
+        auto item = ray.calculateIntersect(m_mesh);
+        this->updateSelectedComp(item);
+
+    } else if (e->buttons() & Qt::RightButton) {
         m_mousePosPrev = glm::vec2(e->x(), e->y());
     }
 }
@@ -310,18 +317,18 @@ void MyGL::mousePressEvent(QMouseEvent *e) {
 void MyGL::mouseMoveEvent(QMouseEvent* e) {
     glm::vec2 pos(e->x(), e->y());
 
-    if (e->buttons() & Qt::LeftButton) {
+    if (e->buttons() & Qt::RightButton) {
         // Rotation
         glm::vec2 diff = 0.01f * (pos - m_mousePosPrev);
         m_mousePosPrev = pos;
         m_glCamera.RotatePhi(-diff.x);
         m_glCamera.RotateTheta(-diff.y);
-    } else if (e->buttons() & Qt::RightButton) {
+
         // Panning
-        glm::vec2 diff = 0.05f * (pos - m_mousePosPrev);
-        m_mousePosPrev = pos;
-        m_glCamera.TranslateAlongRight(-diff.x);
-        m_glCamera.TranslateAlongUp(diff.y);
+//        glm::vec2 diff = 0.05f * (pos - m_mousePosPrev);
+//        m_mousePosPrev = pos;
+//        m_glCamera.TranslateAlongRight(-diff.x);
+//        m_glCamera.TranslateAlongUp(diff.y);
     }
 
     update();  // Calls paintGL, among other things
@@ -548,59 +555,64 @@ void MyGL::resetFaceColorSliders() {
     setFaceColorSliders(glm::vec3(0.f));
 }
 
-void MyGL::slot_get_selected_list_item(QListWidgetItem *item) {
-    // makes sure an item was clicked
-    if (item != 0) {
-        if (HalfEdge* edge = dynamic_cast<HalfEdge*>(item)) {
+void MyGL::setVertPos(glm::vec4 pos) {
+    this->send_vert_x_pos(pos.x);
+    this->send_vert_y_pos(pos.y);
+    this->send_vert_z_pos(pos.z);
+}
 
-            mp_selected_comp = edge;
+void MyGL::resetVertPos() {
+    this->setVertPos(glm::vec4(0.f));
+}
 
-            this->destroy_drawable_comp();
-            this->update_drawable_edge(edge);
+void MyGL::updateSelectedComp(QListWidgetItem *item) {
+    this->destroy_drawable_comp();
 
-            this->resetFaceColorSliders();
+    if (HalfEdge* edge = dynamic_cast<HalfEdge*>(item)) {
 
-            // zeros out positions
-            this->send_vert_x_pos(0.0);
-            this->send_vert_y_pos(0.0);
-            this->send_vert_z_pos(0.0);
+        mp_selected_comp = edge;
 
-        } else if (Face *face = dynamic_cast<Face*>(item)) {
+        this->update_drawable_edge(edge);
 
-            mp_selected_comp = face;
+        this->resetFaceColorSliders();
+        this->resetVertPos();
 
-            this->destroy_drawable_comp();
-            this->update_drawable_face(face->get_edge(), face->get_color());
+        emit edgeSelected(item);
 
-            // sends color to sliders
-            glm::vec3 col = face->get_color();
-            this->setFaceColorSliders(col);
+    } else if (Face *face = dynamic_cast<Face*>(item)) {
 
-            // zeros out positions
-            this->send_vert_x_pos(0.0);
-            this->send_vert_y_pos(0.0);
-            this->send_vert_z_pos(0.0);
+        mp_selected_comp = face;
 
-        } else if (Vertex *vert = dynamic_cast<Vertex*>(item)) {
+        glm::vec3 col = face->get_color();
+        this->update_drawable_face(face->get_edge(), col);
 
-            mp_selected_comp = vert;
+        this->setFaceColorSliders(col);
+        this->resetVertPos();
 
-            this->destroy_drawable_comp();
-            this->update_drawable_vert(vert);
+        emit faceSelected(item);
 
-            // zeros out colors
-            this->resetFaceColorSliders();
+    } else if (Vertex *vert = dynamic_cast<Vertex*>(item)) {
 
-            // sends position to spinboxes
-            glm::vec4 pos = vert->get_pos4();
+        mp_selected_comp = vert;
 
-            this->send_vert_x_pos(pos.x);
-            this->send_vert_y_pos(pos.y);
-            this->send_vert_z_pos(pos.z);
-        }
+        this->update_drawable_vert(vert);
 
-        update();
+        // zeros out colors
+        this->resetFaceColorSliders();
+        this->setVertPos(vert->get_pos4());
+
+        emit vertSelected(item);
     }
+
+    update();
+}
+
+void MyGL::slot_get_selected_list_item(QListWidgetItem *item) {
+    if (item == 0) {
+        return;
+    }
+
+    this->updateSelectedComp(item);
 }
 
 void MyGL::update_drawable_edge(HalfEdge *edge) {

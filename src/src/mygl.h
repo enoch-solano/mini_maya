@@ -10,7 +10,8 @@
 
 #include "camera.h"
 
-#include <mesh.h>
+#include "mesh.h"
+#include "ray.h"
 #include "drawablecomponents.h"
 #include "joint.h"
 
@@ -125,6 +126,11 @@ protected:
     void setFaceColorSliders(glm::vec3 col);
     void resetFaceColorSliders();
 
+    void setVertPos(glm::vec4 pos);
+    void resetVertPos();
+
+    void updateSelectedComp(QListWidgetItem *item);
+
 
 public slots:
     void slot_get_selected_list_item(QListWidgetItem *item);
@@ -163,6 +169,10 @@ public slots:
     void slot_update_joint_z(double);
 
 signals:
+    void edgeSelected(QListWidgetItem*);
+    void faceSelected(QListWidgetItem*);
+    void vertSelected(QListWidgetItem*);
+
     void send_edges(QVector<HalfEdge*>);
     void send_faces(QVector<Face*>);
     void send_verts(QVector<Vertex*>);

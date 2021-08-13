@@ -16,7 +16,7 @@ class Face;
 class Vertex;
 
 class HalfEdge : public Component {
-protected:
+public:
     static unsigned int edge_count;
 
     HalfEdge *mp_next;
@@ -46,7 +46,7 @@ public:
 };
 
 class Face : public Component {
-protected:
+public:
     static unsigned int face_count;
 
     HalfEdge *mp_edge;
@@ -70,7 +70,7 @@ public:
 };
 
 class Vertex : public Component {
-protected:
+public:
     static unsigned int vert_count;
 
     HalfEdge *mp_edge;

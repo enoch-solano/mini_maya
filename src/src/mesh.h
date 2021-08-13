@@ -11,9 +11,9 @@ public:
     int IDX_COUNT;
     const float extrusion_length = 1.0;
 
-    std::vector<Face *> m_faces;
-    std::vector<Vertex *> m_verts;
-    std::vector<HalfEdge *> m_edges;
+    std::vector<Face*> m_faces;
+    std::vector<Vertex*> m_verts;
+    std::vector<HalfEdge*> m_edges;
 
     bool m_is_skinned;
 

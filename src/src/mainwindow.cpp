@@ -22,10 +22,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->faceList, SIGNAL(itemClicked(QListWidgetItem*)), ui->mygl, SLOT(slot_get_selected_list_item(QListWidgetItem*)));
     connect(ui->vertexList, SIGNAL(itemClicked(QListWidgetItem*)), ui->mygl, SLOT(slot_get_selected_list_item(QListWidgetItem*)));
 
-
-    connect(ui->edgeList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_edge_selected(QListWidgetItem*)));
-    connect(ui->faceList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_face_selected(QListWidgetItem*)));
-    connect(ui->vertexList, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(slot_vert_selected(QListWidgetItem*)));
+    connect(ui->mygl, SIGNAL(edgeSelected(QListWidgetItem*)), this, SLOT(slot_edge_selected(QListWidgetItem*)));
+    connect(ui->mygl, SIGNAL(faceSelected(QListWidgetItem*)), this, SLOT(slot_face_selected(QListWidgetItem*)));
+    connect(ui->mygl, SIGNAL(vertSelected(QListWidgetItem*)), this, SLOT(slot_vert_selected(QListWidgetItem*)));
 
     // connects sliders to corresponding face color slot
     connect(ui->redFaceColorSlider, SIGNAL(valueChanged(int)), ui->mygl, SLOT(slot_update_face_red_col(int)));
