@@ -27,6 +27,7 @@ public:
     int m_id;
 
 public:
+    HalfEdge();
     HalfEdge(HalfEdge *next, HalfEdge *sym, Face *face, Vertex *vert);
 
     // GETTERs
@@ -38,8 +39,8 @@ public:
 
     // SETTERs
     void set_next(HalfEdge *next);
-    void set_vert(Vertex *vert, bool edge_set);
-    void set_sym(HalfEdge *sym, bool sym_set);
+    void set_vert(Vertex *vert, bool edge_set = false);
+    void set_sym(HalfEdge *sym, bool sym_set = false);
     void set_face(Face *face);
 
     static void reset_count();
@@ -55,6 +56,7 @@ public:
     int m_id;
 
 public:
+    Face();
     Face(HalfEdge *edge, glm::vec3 color);
 
     // GETTERs
@@ -83,6 +85,7 @@ public:
     int m_id;
 
 public:
+    Vertex(glm::vec3 pos);
     Vertex(HalfEdge *edge, glm::vec3 pos);
 
     // GETTERs

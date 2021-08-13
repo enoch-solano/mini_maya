@@ -205,14 +205,8 @@ void Mesh::triangulate(Face *face_1) {
 
 // Generates and returns a face of the mesh given the vertex indices of the face
 Face *Mesh::generate_face(std::vector<int> vert_idx) {
-    // generates random color
-    float rand_num_1 = ((float) std::rand() / (RAND_MAX));
-    float rand_num_2 = ((float) std::rand() / (RAND_MAX));
-    float rand_num_3 = ((float) std::rand() / (RAND_MAX));
-    glm::vec3 color(rand_num_1, rand_num_2, rand_num_3);
-
     // creates new face
-    Face *face = new Face(nullptr, color);
+    Face *face = new Face();
     m_faces.push_back(face);
 
     HalfEdge *first_edge = new HalfEdge(nullptr, nullptr, face, m_verts[vert_idx.back()]);
@@ -236,18 +230,107 @@ Face *Mesh::generate_face(std::vector<int> vert_idx) {
 }
 
 void Mesh::extrude(Face *face) {
-    HalfEdge *first = face->get_edge();
-    HalfEdge *last = first;
+    if (face == nullptr) {
+        return;
+    }
 
-    do {
-        last = last->get_next();
-    } while (last->get_next() != first);
+    glm::vec3 offset;
+    {
+        // calculate normal
+        glm::vec3 posvert1 = face->mp_edge->mp_vert->m_pos;
+        glm::vec3 posvert2 = face->mp_edge->mp_next->mp_vert->m_pos;
+        glm::vec3 posvert3 = face->mp_edge->mp_next->mp_next->mp_vert->m_pos;
+        glm::vec3 normal = glm::cross(posvert2 - posvert1, posvert3 - posvert2);
+        offset = float(0.5) * glm::normalize(normal);
+    }
 
-    std::vector<Vertex*> extr_verts;
-    std::vector<glm::vec4> extr_verts_pos;
+    std::vector<Vertex*> facevertex;
+    std::vector<HalfEdge*> newhalfedge;
+    HalfEdge *currentedge;
+    currentedge = face->mp_edge;
 
-    HalfEdge *start = face->get_edge();
-    Vertex *v = start->get_vert();
+    // first pass, set new vertex and update the link in this face
+    std::map<std::pair<int, int>, HalfEdge*> halfedgemap;
+    do
+    {
+        auto vertex = new Vertex(currentedge->mp_vert->m_pos + offset);
+
+        facevertex.push_back(currentedge->mp_vert); // record old vertex
+        currentedge->set_vert(vertex, false);
+        newhalfedge.push_back(currentedge); // record halfedge loop
+        m_verts.push_back(vertex);
+        currentedge = currentedge->mp_next;
+    }
+    while(currentedge != face->mp_edge);
+
+    // second pass, add new faces
+    int len = newhalfedge.size();
+    for(int i = 0; i < len; i ++)
+    {
+        currentedge = newhalfedge[i];
+
+        HalfEdge *edge = currentedge->mp_sym;
+        HalfEdge* newedge1 = new HalfEdge();
+        HalfEdge* newedge2 = new HalfEdge();
+        HalfEdge* newedge3 = new HalfEdge();
+        HalfEdge* newedge4 = new HalfEdge();
+
+        // set halfedge -> next
+        newedge1->mp_next = newedge2;
+        newedge2->mp_next = newedge3;
+        newedge3->mp_next = newedge4;
+        newedge4->mp_next = newedge1;
+
+        // set halfedge -> vertex
+        newedge1->set_vert(newhalfedge[(len + i - 1) % len]->mp_vert);
+        newedge2->set_vert(edge->mp_vert);
+        newedge3->set_vert(facevertex[i]);
+        newedge4->set_vert(currentedge->mp_vert);
+
+        // set halfedge -> sym
+        newedge1->set_sym(currentedge);
+        newedge3->set_sym(edge);
+        {
+            int index1 = newedge1->mp_vert->m_id;
+            int index2 = newedge2->mp_vert->m_id;
+            if(halfedgemap.find({index2, index1}) == halfedgemap.end())
+            {
+                halfedgemap[std::make_pair(index1, index2)] = newedge2;
+            }
+            else
+            {
+                halfedgemap[std::make_pair(index2, index1)]->set_sym(newedge2);
+            }
+        }
+        {
+            int index1 = newedge3->mp_vert->m_id;
+            int index2 = newedge4->mp_vert->m_id;
+            if(halfedgemap.find({index2, index1}) == halfedgemap.end())
+            {
+                halfedgemap[std::make_pair(index1, index2)] = newedge4;
+            }
+            else
+            {
+                halfedgemap[std::make_pair(index2, index1)]->set_sym(newedge4);
+            }
+        }
+
+        // set face
+        auto face = new Face();
+        face->set_edge(newedge1);
+        face->set_edge(newedge2);
+        face->set_edge(newedge3);
+        face->set_edge(newedge4);
+
+        // put everything in the array
+        m_faces.push_back(std::move(face));
+        m_edges.push_back(std::move(newedge1));
+        m_edges.push_back(std::move(newedge2));
+        m_edges.push_back(std::move(newedge3));
+        m_edges.push_back(std::move(newedge4));
+        currentedge = currentedge->mp_next;
+    }
+
 }
 
 Vertex *Mesh::get_centroid(Face *f) {
@@ -402,6 +485,8 @@ void Mesh::subdivide() {
     for (int i = 0; i < num_verts; i++) {
         smooth_vert(m_verts[i], face_centroids);
     }
+
+    Face::reset_count();
 
     std::vector<Face *> orig_faces = m_faces;
     m_faces = std::vector<Face*>();

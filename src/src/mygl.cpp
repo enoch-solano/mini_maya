@@ -340,7 +340,8 @@ void MyGL::mouseMoveEvent(QMouseEvent* e) {
 
 // reads in obj file, parses file, and sets up mesh
 void MyGL::slot_import_mesh() {
-    QString filename = QFileDialog::getOpenFileName(this, "Import Mesh", "../src/meshes", tr("Object files (*.obj)"));
+    QString filename =
+            QFileDialog::getOpenFileName(this, "Import Mesh", "../src/meshes", tr("Object files (*.obj)"));
 
     // condition in case user cancels
     if (filename == nullptr) {
@@ -508,7 +509,7 @@ void MyGL::slot_extrude_face() {
     }
 
     Face *face = dynamic_cast<Face*>(mp_selected_comp);
-//    m_mesh.extrude(face);
+    m_mesh.extrude(face);
 
     this->update_drawable_face(face->get_edge(), face->get_color());
     this->update_mesh();

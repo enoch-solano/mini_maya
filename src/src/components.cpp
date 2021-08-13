@@ -28,6 +28,8 @@ HalfEdge::HalfEdge(HalfEdge *next, HalfEdge *sym, Face *face, Vertex *vert)
     setText("edge_" + QString::number(m_id));
 }
 
+HalfEdge::HalfEdge() : HalfEdge(nullptr, nullptr, nullptr, nullptr) {}
+
 // GETTERs
 HalfEdge *HalfEdge::get_next() const {
     return mp_next;
@@ -85,6 +87,12 @@ Face::Face(HalfEdge *edge, glm::vec3 color)
     setText("face_" + QString::number(m_id));
 }
 
+Face::Face()
+    : Face(nullptr,
+           glm::vec3((float) std::rand() / (RAND_MAX),
+                     (float) std::rand() / (RAND_MAX),
+                     (float) std::rand() / (RAND_MAX))) {}
+
 // GETTERs
 HalfEdge *Face::get_edge() const {
     return mp_edge;
@@ -101,6 +109,7 @@ int Face::get_id() const {
 // SETTERs
 void Face::set_edge(HalfEdge *edge) {
     mp_edge = edge;
+    edge->set_face(this);
 }
 
 void Face::set_color(glm::vec3 color) {
@@ -118,6 +127,8 @@ Vertex::Vertex(HalfEdge *edge, glm::vec3 pos)
     vert_count++;
     setText("vertex_" + QString::number(m_id));
 }
+
+Vertex::Vertex(glm::vec3 pos) : Vertex(nullptr, pos) {}
 
 // GETTERs
 HalfEdge *Vertex::get_edge() const {
