@@ -313,6 +313,8 @@ void MyGL::mousePressEvent(QMouseEvent *e) {
     } else if (e->buttons() & Qt::RightButton) {
         m_mousePosPrev = glm::vec2(e->x(), e->y());
     }
+
+    update();  // Calls paintGL, among other things
 }
 
 void MyGL::mouseMoveEvent(QMouseEvent* e) {
